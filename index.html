@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohuhu Honolulu Ultimate Studio V5 — Full 320 Catalog & Delta-E 2000</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="./src/app.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .swatch-card { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+        .swatch-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+
+        .paper-dark { background-color: #020617; color: #f1f5f9; }
+        .paper-white { background-color: #f8fafc; color: #0f172a; }
+        .paper-cream { background-color: #fdf6e3; color: #1e293b; }
+        .paper-tan { background-color: #d6c3a5; color: #1c1917; }
+        .filter-greyscale { filter: grayscale(100%); }
+        .filter-deuteranopia { filter: url('#deuteranopia-filter'); }
+        .filter-high-contrast { filter: contrast(165%) saturate(130%); }
+
+        .paper-white .swatch-dye,
+        .paper-cream .swatch-dye,
+        .paper-tan .swatch-dye { mix-blend-mode: multiply; }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body id="appBody" class="paper-dark min-h-screen flex flex-col pb-32 transition-colors duration-200">
+
+    <svg class="hidden">
+        <filter id="deuteranopia-filter">
+            <feColorMatrix type="matrix" values="0.625, 0.375, 0,   0, 0,
+                                               0.7,   0.3,   0,   0, 0,
+                                               0,     0.3,   0.7, 0, 0,
+                                               0,     0,     0,   1, 0"/>
+        </filter>
+    </svg>
+
+    <header class="bg-slate-900/95 text-slate-100 backdrop-blur border-b border-slate-800 sticky top-0 z-30 shadow-lg no-print">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col xl:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 via-amber-400 to-indigo-500 flex items-center justify-center font-bold text-slate-950 text-sm shadow">OH</div>
+                <div>
+                    <h1 class="text-base font-bold tracking-tight leading-none">Ohuhu Ultimate Studio V5</h1>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Full 320 Catalog • Delta-E 2000 • Portrait Builders</p>
+                </div>
+            </div>
+
+            <nav class="flex flex-wrap justify-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-medium gap-1">
+                <button onclick="switchTab('chart')" id="tab-chart" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white transition">1. Master Chart</button>
+                <button onclick="switchTab('favorites')" id="tab-favorites" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">2. Favorites (<span id="favCountNav">0</span>)</button>
+                <button onclick="switchTab('matrix')" id="tab-matrix" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">3. Value Matrix</button>
+                <button onclick="switchTab('glaze')" id="tab-glaze" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">4. 5-Layer Lab</button>
+                <button onclick="switchTab('wheel')" id="tab-wheel" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">5. Color Wheel & Recipes</button>
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">6. Dashboard</button>
+                <button onclick="switchTab('organizer')" id="tab-organizer" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">7. Organizer & Sync</button>
+            </nav>
+
+            <div class="flex items-center gap-2 text-xs">
+                <select id="paperSelect" onchange="changePaper(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-slate-200 outline-none">
+                    <option value="paper-dark">Theme: Dark Studio</option>
+                    <option value="paper-white">Paper: Bright White</option>
+                    <option value="paper-cream">Paper: Warm Cream</option>
+                    <option value="paper-tan">Paper: Toned Tan</option>
+                </select>
+                <select id="accessibilitySelect" onchange="changeAccessibility(this.value)" class="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-slate-200 outline-none">
+                    <option value="normal">Vision: Normal</option>
+                    <option value="filter-greyscale">Vision: Greyscale</option>
+                    <option value="filter-deuteranopia">Vision: Color Blind</option>
+                    <option value="filter-high-contrast">Vision: High Contrast</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- TAB 1: MASTER CHART -->
+    <section id="view-chart" class="max-w-7xl mx-auto px-4 py-5 flex-1 w-full">
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-4 mb-5 no-print shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300">My Ohuhu Sets & Collection Filter</h2>
+                    <p class="text-[11px] text-slate-400">Full 320 Honolulu Catalog loaded. Select owned sets or click <strong>Blend</strong> for a 5-step smart recipe.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <select id="ownershipMode" onchange="renderChart()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200 font-medium outline-none">
+                        <option value="owned">Show: Markers In Selected Set(s)</option>
+                        <option value="missing">Show: Missing From Master</option>
+                        <option value="duplicates">Highlight: Duplicate Overlaps</option>
+                        <option value="low_ink">Show: Low Ink (≤25% / Empty)</option>
+                    </select>
+                    <select id="tempFilter" onchange="renderChart()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200 outline-none">
+                        <option value="ALL">Temp: All</option>
+                        <option value="WARM">Warm Tones</option>
+                        <option value="COOL">Cool Tones</option>
+                        <option value="NEUTRAL">Neutral</option>
+                    </select>
+                    <button onclick="copyRefillList()" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg font-medium transition">Refill List (<span id="refillCount">0</span>)</button>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2" id="setCheckboxes"></div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 flex flex-col lg:flex-row gap-3">
+                <div class="relative flex-1">
+                    <input type="text" id="searchInput" oninput="debouncedSearch()" placeholder="Search code (BG211), old code (G360), Copic (B00), or name..." class="w-full bg-slate-950 text-xs rounded-lg pl-9 pr-4 py-2 border border-slate-700 text-slate-200 outline-none focus:border-indigo-500">
+                    <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+                <select id="familyFilter" onchange="renderChart()" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 outline-none">
+                    <option value="ALL">All Families (Chromatic)</option>
+                    <option value="R">R — Reds</option><option value="YR">YR — Yellow-Reds / Oranges</option><option value="Y">Y — Yellows</option>
+                    <option value="YG">YG — Yellow-Greens</option><option value="G">G — Greens</option><option value="BG">BG — Blue-Greens</option>
+                    <option value="B">B — Blues</option><option value="BV">BV — Blue-Violets</option><option value="V">V — Violets</option>
+                    <option value="RV">RV — Red-Violets</option><option value="E">E — Earth Tones</option><option value="GREY">Greys</option><option value="0">Blender & Black</option>
+                </select>
+                <div class="flex items-center gap-1.5 text-xs">
+                    <button onclick="bulkSwatchVisible(true)" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 px-2.5 py-2 rounded-lg transition">Swatch Visible</button>
+                    <button onclick="bulkSwatchVisible(false)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-2 rounded-lg transition">Clear Visible</button>
+                    <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-2 rounded-lg transition">Print Sheet</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4 text-xs">
+            <div class="flex flex-wrap items-center gap-1.5">
+                <span class="opacity-70 font-medium">Mood Presets:</span>
+                <button onclick="loadMoodPalette('cyberpunk')" class="px-2 py-0.5 rounded bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">Cyberpunk</button>
+                <button onclick="loadMoodPalette('sunset')" class="px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 border border-orange-500/30">Sunset</button>
+                <button onclick="loadMoodPalette('fantasy')" class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">Fantasy</button>
+                <button onclick="loadMoodPalette('forest')" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Forest</button>
+                <button onclick="loadMoodPalette('ocean')" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Ocean</button>
+            </div>
+            <div class="flex items-center gap-4 opacity-85">
+                <span id="statsSummary">Showing markers...</span>
+                <span id="swatchProgress" class="font-semibold text-emerald-500">Swatched: 0</span>
+            </div>
+        </div>
+
+        <div id="chartContainer" class="space-y-6"></div>
+    </section>
+
+    <!-- TAB 2: FAVORITES TAB -->
+    <section id="view-favorites" class="hidden max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+            <h2 class="text-base font-bold mb-1">Favorite Markers (★ Collection)</h2>
+            <p class="text-xs text-slate-400 mb-4">Quick access to all markers you have starred across your catalog.</p>
+            <div id="favoritesContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5"></div>
+        </div>
+    </section>
+
+    <!-- TAB 3: VALUE MATRIX -->
+    <section id="view-matrix" class="hidden max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+            <h2 class="text-base font-bold mb-1">Family Value Matrix (Lightness Gradient)</h2>
+            <p class="text-xs text-slate-400 mb-4">Sorted strictly from highest luminance (highlight) to lowest luminance (deep shadow). Click any swatch to generate its 5-step Smart Blend Recipe.</p>
+            <div id="smartRecipeBanner" class="hidden mb-5 bg-slate-950 border border-indigo-500/40 rounded-xl p-4"></div>
+            <div id="matrixContainer" class="space-y-6"></div>
+        </div>
+    </section>
+
+    <!-- TAB 4: 5-LAYER GLAZE & TRANSLUCENCY LAB -->
+    <section id="view-glaze" class="hidden max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-6 shadow-lg">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                    <h2 class="text-base font-bold">5-Layer Alcohol Ink Glaze & Translucency Lab</h2>
+                    <p class="text-xs text-slate-400">Stack a base coat and up to 4 glaze passes with custom opacity controls. <span class="text-amber-400 font-medium">Approximate digital preview only.</span></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label class="text-xs text-slate-400">Active Layers:</label>
+                    <select id="layerCountSelect" onchange="updateGlazeLabUI()" class="bg-slate-950 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 outline-none">
+                        <option value="2">2 Layers</option>
+                        <option value="3">3 Layers</option>
+                        <option value="4">4 Layers</option>
+                        <option value="5" selected>5 Layers</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6" id="glazeLayersContainer"></div>
+
+            <div class="bg-slate-950 border border-indigo-500/40 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div id="glazeResultSwatch" class="w-16 h-16 rounded-xl border border-slate-700 flex items-center justify-center text-xs font-bold mono shadow-inner shrink-0"></div>
+                    <div>
+                        <div class="text-xs font-bold uppercase text-indigo-300">Simulated Multi-Layer Result (Approximate Digital Preview)</div>
+                        <div id="glazeResultText" class="text-xs mono text-slate-400 mt-0.5">—</div>
+                    </div>
+                </div>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button onclick="saveGlazeRecipe()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium px-4 py-2.5 rounded-lg transition">Log Recipe</button>
+                    <button onclick="sendGlazeToTray()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-4 py-2.5 rounded-lg transition">Send to Tray</button>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-800">
+                <h3 class="text-xs font-bold uppercase text-slate-400 mb-2">Recent Glaze Lab History</h3>
+                <div id="glazeHistoryList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 5: COLOR WHEEL STUDIO, PORTRAIT BUILDERS & PHOTO MATCHER -->
+    <section id="view-wheel" class="hidden max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        <!-- Portrait & Character Builders -->
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-6 shadow-lg space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-base font-bold">Portrait & Botanical Palette Builders</h2>
+                    <p class="text-xs text-slate-400">Instantly generate professional rendering recipes for skin tones, hair, eyes, and florals.</p>
+                </div>
+                <button onclick="loadAllPresetToTray()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3.5 py-2 rounded-lg transition font-medium">Add Entire Recipe To Tray</button>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="loadPresetPalette('skin')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Skin Tone Builder</button>
+                <button onclick="loadPresetPalette('hair')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Hair Builder</button>
+                <button onclick="loadPresetPalette('eyes')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Eye Color Builder</button>
+                <button onclick="loadPresetPalette('anime')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Anime Character</button>
+                <button onclick="loadPresetPalette('floral')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Flower Palettes</button>
+                <button onclick="loadPresetPalette('seasonal')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">Seasonal Palettes</button>
+            </div>
+            <div id="builderPreviewArea" class="pt-3 border-t border-slate-800 text-xs text-slate-400">Click any builder above to load recipes into your tray.</div>
+        </div>
+
+        <!-- Color Wheel Harmony Studio (Delta-E 2000) -->
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-6 shadow-lg">
+            <h2 class="text-base font-bold mb-1">Color Wheel & Perceptual Harmony Studio (Delta-E 2000)</h2>
+            <p class="text-xs text-slate-400 mb-4">Pick any target hue on the wheel to find the perceptually closest Ohuhu marker plus true CIE LAB Harmonies.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="flex flex-col items-center bg-slate-950 border border-slate-800 rounded-xl p-4">
+                    <input type="color" id="wheelColorInput" value="#3B82F6" oninput="analyzeWheelColor(this.value)" class="w-24 h-24 rounded-full cursor-pointer border-0 bg-transparent">
+                    <span id="wheelHexLabel" class="text-xs font-bold mono mt-2">#3B82F6</span>
+                </div>
+                <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3" id="wheelHarmonyResults"></div>
+            </div>
+        </div>
+
+        <!-- Fisher-Yates Daily & Random Challenge -->
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-6 shadow-lg">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-base font-bold">Daily & Random Palette Challenge (Fisher-Yates)</h2>
+                    <p class="text-xs text-slate-400">Try today's global seeded challenge or spin a true Fisher-Yates random palette from your sets.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="loadDailyChallenge()" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold px-3.5 py-2 rounded-lg transition">📅 Today's Daily Challenge</button>
+                    <button onclick="generateFisherYatesChallenge()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">🎲 Spin Random (Owned)</button>
+                </div>
+            </div>
+            <div id="challengeTitle" class="text-xs font-bold text-indigo-300 mb-2"></div>
+            <div id="challengeResult" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
+        </div>
+
+        <!-- Photo Color Picker (Delta-E 2000 & Top 5 Extraction) -->
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-base font-bold">Photo-to-Ohuhu Delta-E 2000 Matcher & Top 5 Extractor</h2>
+                    <p class="text-xs text-slate-400">Sample pixels individually or auto-extract top dominant palette matches from the uploaded image.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
+                        <input type="checkbox" id="matchOwnedOnly" checked class="rounded bg-slate-800 border-slate-700">
+                        Owned sets only
+                    </label>
+                    <label class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-4 py-2 rounded-lg cursor-pointer transition">
+                        Upload Image
+                        <input type="file" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center min-h-[300px] overflow-hidden relative">
+                    <canvas id="imageCanvas" onclick="pickColorFromCanvas(event)" class="max-w-full max-h-[400px] cursor-crosshair hidden"></canvas>
+                    <div id="canvasPlaceholder" class="text-center p-8 text-slate-500 text-xs">Upload an image above to sample pixels or extract top dominant colors.</div>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Closest Delta-E 2000 Matches</h3>
+                        <div id="matchResults" class="space-y-2.5 text-xs text-slate-500">Click anywhere on the image to sample.</div>
+                    </div>
+                    <div id="extractedPaletteArea" class="mt-4 pt-3 border-t border-slate-800 hidden">
+                        <h4 class="text-[11px] font-bold uppercase tracking-wider text-indigo-300 mb-2">Extracted Top 5 Dominant Palette</h4>
+                        <div id="extractedColorsList" class="grid grid-cols-5 gap-1.5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 6: ARTIST DASHBOARD -->
+    <section id="view-dashboard" class="hidden max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="dashboardStatsCards"></div>
+
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+            <h3 class="text-sm font-bold mb-1">Family Completion Report</h3>
+            <p class="text-xs text-slate-400 mb-4">Ownership breakdown across all Ohuhu color families.</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" id="familyCompletionGrid"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <h3 class="text-sm font-bold mb-1">Most Used Markers Heatmap</h3>
+                <p class="text-xs text-slate-400 mb-3">Tracked automatically when markers are manually added or used.</p>
+                <div id="topMarkersList" class="space-y-2 text-xs"></div>
+            </div>
+
+            <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <h3 class="text-sm font-bold mb-1">Marker Purchase Advisor</h3>
+                <p class="text-xs text-slate-400 mb-3">Families with the highest number of missing markers from your collection.</p>
+                <div id="purchaseAdvisorList" class="space-y-2 text-xs"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 7: ORGANIZER, CUSTOM LAB & BACKUP -->
+    <section id="view-organizer" class="hidden max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-base font-bold">Physical Bag & Bamboo Organizer Slot Map</h2>
+                    <p class="text-xs text-slate-400">Sorted logically by Family → Hue → Value (Luminance) with Row & Column coordinates.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="findMarkerInput" placeholder="Search Code (e.g. BG211)" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none w-44">
+                    <button onclick="findMarkerLocation()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3.5 py-1.5 rounded-lg transition">Find Slot</button>
+                </div>
+            </div>
+            <div id="findLocationResult" class="text-xs font-bold text-indigo-300"></div>
+            <div id="organizerGrid" class="grid gap-2"></div>
+        </div>
+
+        <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+            <h2 class="text-base font-bold mb-1">Custom Swatch & Ink Mix Lab</h2>
+            <p class="text-xs text-slate-400 mb-4">Add custom mixes and assign them to any color family.</p>
+            <div class="flex flex-wrap gap-3 mb-4">
+                <input type="text" id="customName" placeholder="Mix Name (e.g. Warm Peach)" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none flex-1">
+                <select id="customFam" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none">
+                    <option value="R">R</option><option value="YR">YR</option><option value="Y">Y</option>
+                    <option value="YG">YG</option><option value="G">G</option><option value="BG">BG</option>
+                    <option value="B">B</option><option value="BV">BV</option><option value="V">V</option>
+                    <option value="RV">RV</option><option value="E">E</option><option value="GREY">GREY</option>
+                </select>
+                <input type="color" id="customHex" value="#FFB088" class="bg-slate-950 border border-slate-700 rounded-lg h-8 w-12 cursor-pointer p-1">
+                <button onclick="addCustomMarker()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-1.5 rounded-lg transition">Add Custom Swatch</button>
+            </div>
+            <div id="customMarkersList" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <h2 class="text-base font-bold mb-1">Saved Palettes (Max 100)</h2>
+                <p class="text-xs text-slate-400 mb-3">Includes automatic Blend Quality Score (0–100).</p>
+                <div id="savedPalettesList" class="space-y-3 max-h-72 overflow-y-auto"></div>
+            </div>
+            <div class="bg-slate-900 text-slate-100 border border-slate-800 rounded-xl p-5 shadow-lg flex flex-col justify-between">
+                <div>
+                    <h2 class="text-base font-bold mb-1">Validated Cross-Device Backup & Sync</h2>
+                    <p class="text-xs text-slate-400 mb-4">Exports/imports your sets, tray, swatched status, ink percentages, usage stats, and palettes.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportBackup()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium px-3.5 py-2 rounded-lg transition">Export JSON</button>
+                    <label class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-3.5 py-2 rounded-lg cursor-pointer transition">
+                        Import JSON
+                        <input type="file" accept=".json" onchange="importBackup(event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PINNED BOTTOM BLENDING TRAY -->
+    <div class="fixed bottom-0 inset-x-0 bg-slate-900/95 text-slate-100 backdrop-blur border-t border-slate-800 px-4 py-3 z-40 shadow-2xl no-print">
+        <div class="max-w-7xl mx-auto flex flex-col xl:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2 overflow-x-auto w-full xl:w-auto" id="trayContainer"></div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <span id="trayQualityBadge" class="text-[11px] font-bold px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Blend Quality: —</span>
+                <input type="text" id="paletteNameInput" placeholder="Palette name" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 w-32 outline-none">
+                <button onclick="saveCurrentTray()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-lg transition">Save</button>
+                <button onclick="copyPaletteCodes()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg transition">Copy Codes</button>
+                <button onclick="exportTrayPng()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg transition">PNG</button>
+                <button onclick="shareFullStateUrl()" class="bg-emerald-600/20 text-emerald-300 border border-emerald-500/30 text-xs px-3 py-1.5 rounded-lg transition">Share URL</button>
+                <button onclick="clearTray()" class="bg-slate-800 text-slate-300 text-xs px-2.5 py-1.5 rounded-lg transition">Clear</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

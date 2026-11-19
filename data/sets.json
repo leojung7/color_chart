@@ -1,0 +1,62 @@
+[
+  {
+    "id": "320",
+    "label": "320 Master Set",
+    "expectedCount": 320,
+    "category": "main"
+  },
+  {
+    "id": "216",
+    "label": "216 Set",
+    "expectedCount": 216,
+    "category": "main"
+  },
+  {
+    "id": "168",
+    "label": "168 Set",
+    "expectedCount": 168,
+    "category": "main"
+  },
+  {
+    "id": "120",
+    "label": "120 Set",
+    "expectedCount": 120,
+    "category": "main"
+  },
+  {
+    "id": "104",
+    "label": "104 Set",
+    "expectedCount": 104,
+    "category": "expansion"
+  },
+  {
+    "id": "80",
+    "label": "80 Set",
+    "expectedCount": 80,
+    "category": "main"
+  },
+  {
+    "id": "48",
+    "label": "48 Set",
+    "expectedCount": 48,
+    "category": "main"
+  },
+  {
+    "id": "PASTEL48",
+    "label": "48 Pastels",
+    "expectedCount": 48,
+    "category": "specialty"
+  },
+  {
+    "id": "MID48",
+    "label": "48 Mid-Tones",
+    "expectedCount": 48,
+    "category": "specialty"
+  },
+  {
+    "id": "SKIN36",
+    "label": "36 Skin Tones",
+    "expectedCount": 36,
+    "category": "specialty"
+  }
+]
